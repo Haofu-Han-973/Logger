@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Log file path : /sdcard</string>
+    <string name="app_name">AndroidLogger</string>
+    <string-array name="checkBoxes">
+        <item >Screen</item>
+        <item >Memory</item>
+        <item >Cpu</item>
+    </string-array>
+    <string name="checkBoxScreen">Screen</string>
+    <string name="checkBoxMemory">Memory</string>
+    <string name="startButton">START</string>
+    <string name="stopButton">STOP</string>
+    <string name="checkButtonCPU">CPU</string>
+    <string name="checkButtonPacket">Packet</string>
+
+</resources>
