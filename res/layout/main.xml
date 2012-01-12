@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    
-    android:orientation="vertical" >
+    android:layout_height="fill_parent">
 
     
     <TextView
@@ -16,21 +15,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="fill"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/buttonStart"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/startButton" />
-
-        <Button
-            android:id="@+id/buttonStop"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/stopButton" />
+        android:orientation="horizontal" android:weightSum="1">
+        <Button android:layout_width="wrap_content" android:text="Button" android:layout_height="wrap_content" android:layout_weight="0.52" android:id="@+id/buttonstart"></Button>
+        <Button android:layout_width="wrap_content" android:text="Button" android:layout_height="wrap_content" android:layout_weight="0.49" android:id="@+id/buttonstop"></Button>
     </LinearLayout>
     
     <LinearLayout
@@ -70,21 +57,18 @@
 	   
 
     <CheckBox
-        android:id="@+id/checkBox2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/checkBoxMemory" />
+        android:text="@string/checkBoxMemory" android:id="@+id/checkBoxMemory"/>
 
     <CheckBox
-        android:id="@+id/checkBox3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/checkButtonCPU" />
+        android:text="@string/checkButtonCPU" android:id="@+id/checkBoxCpu"/>
 
     <CheckBox
-        android:id="@+id/checkBox4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/checkButtonPacket" />
+        android:text="@string/checkButtonPacket" android:id="@+id/checkBoxPacket"/>
 
 </LinearLayout>
