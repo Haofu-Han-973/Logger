@@ -1,15 +1,11 @@
-/**
- * 
- */
+
 package com.Lab973.GreenSmartphone;
-
-
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import android.app.Activity;
+import android.content.Context;
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
 
@@ -22,8 +18,11 @@ public class ScreenLogger extends MyLogger {
 	/**
 	 * @param logFileName
 	 */
-	public ScreenLogger(String logFileName, int interval, Activity a) {
-		super(logFileName, interval, a);
+	public Context context;
+	public static final String TAG="ScreenLogger";
+	public ScreenLogger(String logFileName, int interval, Context a) {
+		super(logFileName, interval);
+		context = a;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -41,9 +40,9 @@ public class ScreenLogger extends MyLogger {
 			if(ret != null)
 			{
 				return ret;
-			}else
+			}else //In case there is no /sys/class/leds/lcd-backlight/brightness file, use system setting value
 			{
-				return ""+Settings.System.getInt(this.activity.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+				return ""+Settings.System.getInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

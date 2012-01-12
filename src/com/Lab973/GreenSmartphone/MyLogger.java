@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.Lab973.GreenSmartphone;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -10,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import android.app.Activity;
 /**
  * @author hhf
  *
@@ -18,14 +15,14 @@ import android.app.Activity;
 public abstract class MyLogger extends Thread {
 	public String logFileName;
 	public int logInterval; // ms
-	public Activity activity;
-	public int stopFlag;
-	public MyLogger(String logFileName, int interval, Activity a){
+	public boolean stopFlag;
+	public String log="";
+	public static final String TAG="MyLogger";
+	public MyLogger(String logFileName, int interval){
 		super();
 		this.logFileName = logFileName;
 		this.logInterval = interval;
-		this.activity = a;
-		this.stopFlag = 0;
+		this.stopFlag =true;
 	}
 	public void startLog()
 	{
@@ -33,40 +30,36 @@ public abstract class MyLogger extends Thread {
 	}
 	public void stopLog()
 	{
-		this.stopFlag = 1;
+		this.stopFlag = false;
 	}
+	
 	public abstract String getLogValue();
+	
 	public void run() {
 		try {
-			this.stopFlag = 0;
+			this.stopFlag = true;
 		    BufferedWriter out = new BufferedWriter(new FileWriter(this.logFileName));
 		    SimpleDateFormat bartDateFormat =  
-		    		  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");  
-			while(true){
+			new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");  
+			while(stopFlag){
 				try {
 					Thread.sleep(this.logInterval);
-					
-					if(this.stopFlag == 1)
-					{
-						out.close();
-						break;
-						
-					}else{
-						long timeInMillis = System.currentTimeMillis();
-						Calendar cal = Calendar.getInstance();
-						cal.setTimeInMillis(timeInMillis);
-						Date date = cal.getTime();
-						out.write(bartDateFormat.format(date)+"\t"+ this.getLogValue() + "\n");
-						out.flush();
-					}
+					long timeInMillis = System.currentTimeMillis();
+					Calendar cal = Calendar.getInstance();
+					cal.setTimeInMillis(timeInMillis);
+					Date date = cal.getTime();
+					log+=bartDateFormat.format(date)+"\t"+ this.getLogValue() + "\r\n";
 					
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
-				} catch (IOException e){
-					e.printStackTrace();
 				}
 			}
-		
+			if(!stopFlag)
+			{
+				out.write(log);
+				out.flush();
+				out.close();
+			}
 		} catch (IOException e) {//open file failed!
 			e.printStackTrace();
 		}
