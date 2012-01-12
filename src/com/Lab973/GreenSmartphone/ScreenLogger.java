@@ -40,7 +40,7 @@ public class ScreenLogger extends MyLogger {
 			if(ret != null)
 			{
 				return ret;
-			}else
+			}else //In case there is no /sys/class/leds/lcd-backlight/brightness file, use system setting value
 			{
 				return ""+Settings.System.getInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
 			}
