@@ -1,7 +1,7 @@
 AndroidLogger
 
-Haofu Han
+Can generate log trace for:
 
-
-Add Memory Logger by Redsniper Zou
-Chaoqun Yue
+	* CPU
+	* Memory
+	* Screen
