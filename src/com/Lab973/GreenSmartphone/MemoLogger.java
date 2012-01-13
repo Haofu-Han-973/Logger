@@ -3,11 +3,9 @@ package com.Lab973.GreenSmartphone;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Calendar;
-
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.MemoryInfo;
+import android.app.Service;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.content.Context;
@@ -19,10 +17,10 @@ public class MemoLogger extends MyLogger {
 	protected boolean m_bOpenFile=false;
 	protected long m_iTotalMemory=0;
 	protected CharSequence m_sNotification;
-	protected Activity m_a;
+	protected Service m_a;
 
-	public MemoLogger(String logFileName, int interval, Activity a) {
-		super(logFileName, interval, a);
+	public MemoLogger(String logFileName, int interval, Service a) {
+		super(logFileName, interval);
 		// TODO Auto-generated constructor stub
 
 		m_a=a;
@@ -35,9 +33,8 @@ public class MemoLogger extends MyLogger {
 	public String getLogValue() {
 		// TODO Auto-generated method stub
 		
-		String strLog=getSysTime()+":  "+getMemoryInfo()+"\n";
 		
-		return strLog;
+		return getMemoryInfo();
 	}
 
 	
@@ -45,7 +42,7 @@ public class MemoLogger extends MyLogger {
     {
     	m_acMger.getMemoryInfo(m_mi);
     	
-    	float proportion=(float)(m_mi.availMem)/(float)(m_iTotalMemory);
+    	float proportion=(float)(m_iTotalMemory-m_mi.availMem)/(float)(m_iTotalMemory);
     	int percent=(int)(proportion*100);
     	
     	String rstr=""+percent+"%  "+Formatter.formatFileSize(m_a.getBaseContext(), m_mi.availMem)+"  "+Formatter.formatFileSize(m_a.getBaseContext(), m_iTotalMemory);
@@ -53,15 +50,6 @@ public class MemoLogger extends MyLogger {
     	return rstr;
     }
     
-    public String getSysTime()
-    {
-    	long time=System.currentTimeMillis();
-    	Calendar calendar=Calendar.getInstance();
-    	calendar.setTimeInMillis(time);
-    	String rstr=""+calendar.get(Calendar.HOUR)+":"+calendar.get(Calendar.MINUTE)+":"+calendar.get(Calendar.SECOND);
-    	
-    	return rstr;
-    }
     
     public long getTotalMemory()
     {

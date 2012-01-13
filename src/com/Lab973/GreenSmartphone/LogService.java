@@ -17,6 +17,7 @@ public class LogService extends Service {
 	boolean packetchecked=false;
 	CPULogger cl;
 	ScreenLogger sl;
+	MemoLogger m1;
 	NotificationManager mNM;
 	
 	@Override
@@ -37,8 +38,12 @@ public class LogService extends Service {
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub
-		if(cpuchecked)cl.stopLog();
-		if(screenchecked)sl.stopLog();
+		if (cpuchecked)
+			cl.stopLog();
+		if (screenchecked)
+			sl.stopLog();
+		if (memorychecked)
+			m1.stopLog();
 		destroyNotification();
 		super.onDestroy();
 	}
@@ -49,6 +54,7 @@ public class LogService extends Service {
 		interval=intent.getIntExtra("Interval", 1000);
 		cpuchecked=intent.getBooleanExtra("Cpu", false);
 		screenchecked=intent.getBooleanExtra("Screen", false);
+		memorychecked=intent.getBooleanExtra("Memory", false);
 		
 		if(cpuchecked)
 		{
@@ -59,6 +65,11 @@ public class LogService extends Service {
 		{
 			sl=new ScreenLogger("/sdcard/screen.txt", interval, getApplicationContext());	
 			sl.start();
+		}
+		if(memorychecked)
+		{
+			m1=new MemoLogger("/sdcard/memory.txt", interval, this);
+			m1.start();
 		}
 		super.onStart(intent, startId);
 	}
