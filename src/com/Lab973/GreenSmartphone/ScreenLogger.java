@@ -33,7 +33,6 @@ public class ScreenLogger extends MyLogger {
 		java.lang.Process p;
 		try {
 			p = Runtime.getRuntime().exec(cmd);
-			p.getInputStream();
 			
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()),cmd.length());
 			String ret = input.readLine();

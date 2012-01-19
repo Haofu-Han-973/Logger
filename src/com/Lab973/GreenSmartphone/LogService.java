@@ -18,6 +18,7 @@ public class LogService extends Service {
 	CPULogger cl;
 	ScreenLogger sl;
 	MemoLogger m1;
+	PacketLogger pl;
 	NotificationManager mNM;
 	
 	@Override
@@ -44,6 +45,8 @@ public class LogService extends Service {
 			sl.stopLog();
 		if (memorychecked)
 			m1.stopLog();
+		if (packetchecked)
+			pl.stopLog();
 		destroyNotification();
 		super.onDestroy();
 	}
@@ -51,25 +54,31 @@ public class LogService extends Service {
 	@Override
 	public void onStart(Intent intent, int startId) {
 		// TODO Auto-generated method stub
-		interval=intent.getIntExtra("Interval", 1000);
-		cpuchecked=intent.getBooleanExtra("Cpu", false);
-		screenchecked=intent.getBooleanExtra("Screen", false);
-		memorychecked=intent.getBooleanExtra("Memory", false);
+		interval = intent.getIntExtra("Interval", 1000);
+		cpuchecked = intent.getBooleanExtra("Cpu", false);
+		screenchecked = intent.getBooleanExtra("Screen", false);
+		memorychecked = intent.getBooleanExtra("Memory", false);
+		packetchecked = intent.getBooleanExtra("Packet", false);
 		
 		if(cpuchecked)
 		{
-			cl=new CPULogger("/sdcard/cpu.txt", interval);	
+			cl = new CPULogger("/sdcard/cpu.txt", interval);	
 			cl.start();
 		}
 		if(screenchecked)
 		{
-			sl=new ScreenLogger("/sdcard/screen.txt", interval, getApplicationContext());	
+			sl = new ScreenLogger("/sdcard/screen.txt", interval, getApplicationContext());	
 			sl.start();
 		}
 		if(memorychecked)
 		{
-			m1=new MemoLogger("/sdcard/memory.txt", interval, this);
+			m1 = new MemoLogger("/sdcard/memory.txt", interval, this);
 			m1.start();
+		}
+		if(packetchecked)
+		{
+			pl = new PacketLogger("/sdcard/packet.txt", interval);
+			pl.start();
 		}
 		super.onStart(intent, startId);
 	}
