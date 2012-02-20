@@ -22,10 +22,18 @@ public class MobleEventCollectorActivity extends Activity {
 	CheckBox cbcpu=null;
 	CheckBox cbmemory=null;
 	CheckBox cbpacket=null;
+	CheckBox cbthreeG=null;
+	CheckBox cbwifi=null;
+	CheckBox cbbluetooth=null;
+	CheckBox cbgps=null;
 	boolean screenchecked=false;
 	boolean cpuchecked=false;
 	boolean memorychecked=false;
 	boolean packetchecked=false;
+	boolean threeGchecked=false;
+	boolean wifichecked=false;
+	boolean bluetoothchecked=false;
+	boolean gpschecked=false;
 	int interval=1;
 
     @Override
@@ -44,11 +52,18 @@ public class MobleEventCollectorActivity extends Activity {
         cbcpu=(CheckBox)findViewById(R.id.checkBoxCpu);
         cbmemory=(CheckBox)findViewById(R.id.checkBoxMemory);
         cbpacket=(CheckBox)findViewById(R.id.checkBoxPacket);
+        cbthreeG=(CheckBox)findViewById(R.id.checkBoxThreeG);
+        cbwifi=(CheckBox)findViewById(R.id.checkBoxWifi);
+        cbbluetooth=(CheckBox)findViewById(R.id.checkBoxBluetooth);
+        cbgps=(CheckBox)findViewById(R.id.checkBoxGPS);
         cbscreen.setOnCheckedChangeListener(new screenoccl());
         cbcpu.setOnCheckedChangeListener(new cpuoccl());
         cbmemory.setOnCheckedChangeListener(new memoryoccl());
         cbpacket.setOnCheckedChangeListener(new packetoccl());
-        
+        cbthreeG.setOnCheckedChangeListener(new threeGoccl());
+        cbwifi.setOnCheckedChangeListener(new wifioccl());
+        cbbluetooth.setOnCheckedChangeListener(new bluetoothoccl());
+        cbgps.setOnCheckedChangeListener(new gpsoccl());
         intervalbar = (SeekBar)findViewById(R.id.seekBarScreenLight);
         intervalbar.setOnSeekBarChangeListener(new osb());
         intervalbar.getProgress();
@@ -70,6 +85,10 @@ public class MobleEventCollectorActivity extends Activity {
 			intent.putExtra("Memory", memorychecked);
 			intent.putExtra("Cpu", cpuchecked);
 			intent.putExtra("Packet", packetchecked);
+			intent.putExtra("ThreeG", threeGchecked);
+			intent.putExtra("Wifi", wifichecked);
+			intent.putExtra("Bluetooth", bluetoothchecked);
+			intent.putExtra("GPS", gpschecked);
 			intent.putExtra("Interval", interval);
 			
 			startService(intent);
@@ -144,6 +163,42 @@ public class MobleEventCollectorActivity extends Activity {
 				boolean isChecked) {
 			if(isChecked)packetchecked=true;
 			else packetchecked=false;		
+		}   	
+    }
+    class threeGoccl implements OnCheckedChangeListener
+    {
+    	@Override
+		public void onCheckedChanged(CompoundButton buttonView,
+				boolean isChecked) {
+			if(isChecked)threeGchecked=true;
+			else threeGchecked=false;		
+		}   	
+    }
+    class wifioccl implements OnCheckedChangeListener
+    {
+    	@Override
+		public void onCheckedChanged(CompoundButton buttonView,
+				boolean isChecked) {
+			if(isChecked)wifichecked=true;
+			else wifichecked=false;		
+		}   	
+    }
+    class bluetoothoccl implements OnCheckedChangeListener
+    {
+    	@Override
+		public void onCheckedChanged(CompoundButton buttonView,
+				boolean isChecked) {
+			if(isChecked)bluetoothchecked=true;
+			else bluetoothchecked=false;		
+		}   	
+    }
+    class gpsoccl implements OnCheckedChangeListener
+    {
+    	@Override
+		public void onCheckedChanged(CompoundButton buttonView,
+				boolean isChecked) {
+			if(isChecked)gpschecked=true;
+			else gpschecked=false;		
 		}   	
     }
 }
