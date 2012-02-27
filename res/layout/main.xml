@@ -19,6 +19,7 @@
         <Button android:layout_width="wrap_content" android:text="@string/startButton" android:layout_height="wrap_content" android:layout_weight="0.52" android:id="@+id/buttonstart"></Button>
         <Button android:layout_width="wrap_content" android:text="@string/stopButton" android:layout_height="wrap_content" android:layout_weight="0.49" android:id="@+id/buttonstop"></Button>
     </LinearLayout>
+    <SeekBar android:layout_weight="1" android:id="@+id/seekBarScreenLight" android:layout_gravity="center" android:layout_marginRight="20dp" android:layout_width="fill_parent" android:max="999" android:layout_marginLeft="20dp" android:layout_height="wrap_content" android:progress="500"></SeekBar>
     
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -26,12 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="fill"
         android:orientation="horizontal" >
-
-		<CheckBox
-		    android:id="@+id/checkBoxScreenLight"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/checkBoxScreen" />
+        <CheckBox android:id="@+id/checkBoxScreenLight" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/checkBoxScreen"></CheckBox>
 		
         <TextView
             android:id="@+id/textViewScreen"
@@ -45,15 +41,6 @@
         
 
     </LinearLayout>
-	<SeekBar
-        android:id="@+id/seekBarScreenLight"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:max="999"
-        android:progress="500"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" />
 	   
 
     <CheckBox
@@ -70,5 +57,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/checkButtonPacket" android:id="@+id/checkBoxPacket"/>
+        
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/checkButtonThreeG" android:id="@+id/checkBoxThreeG"/>
+    
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/checkButtonWifi" android:id="@+id/checkBoxWifi"/>
+        
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/checkButtonBluetooth" android:id="@+id/checkBoxBluetooth"/>
+        
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/checkButtonGPS" android:id="@+id/checkBoxGPS"/>
 
 </LinearLayout>

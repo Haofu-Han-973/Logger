@@ -14,5 +14,9 @@
     <string name="stopButton">STOP</string>
     <string name="checkButtonCPU">CPU</string>
     <string name="checkButtonPacket">Packet</string>
+    <string name="checkButtonThreeG">ThreeG</string>
+    <string name="checkButtonBluetooth">Bluetooth</string>
+    <string name="checkButtonWifi">Wifi</string>
+    <string name="checkButtonGPS">GPS</string>
 
 </resources>
