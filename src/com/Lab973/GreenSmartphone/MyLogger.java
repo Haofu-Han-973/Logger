@@ -18,6 +18,7 @@ public abstract class MyLogger extends Thread {
 	public boolean stopFlag;
 	public String log="";
 	public static final String TAG="MyLogger";
+	public static final int FLUSH_COUNT = 100;
 	public MyLogger(String logFileName, int interval){
 		super();
 		this.logFileName = logFileName;
@@ -41,8 +42,16 @@ public abstract class MyLogger extends Thread {
 		    BufferedWriter out = new BufferedWriter(new FileWriter(this.logFileName));
 		    SimpleDateFormat bartDateFormat =  
 			new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");  
+		    int count = 0;
 			while(stopFlag){
 				try {
+					if(count++ == FLUSH_COUNT)
+					{
+						out.write(log);
+						out.flush();
+						log = "";
+						count = 0;
+					}
 					Thread.sleep(this.logInterval);
 					long timeInMillis = System.currentTimeMillis();
 					Calendar cal = Calendar.getInstance();
