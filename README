@@ -5,3 +5,7 @@ Can generate log trace for:
 	* CPU
 	* Memory
 	* Screen
+	* Bluetooth
+	* GPS
+	* Wifi
+	* 3G
