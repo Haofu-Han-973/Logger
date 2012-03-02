@@ -2,6 +2,7 @@ package com.Lab973.GreenSmartphone;
 
 import android.content.Context;
 import android.telephony.PhoneStateListener;
+import android.telephony.gsm.GsmCellLocation;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.app.Service;
@@ -23,7 +24,9 @@ public class ThreeGLogger extends MyLogger {
 
 	@Override
 	public String getLogValue() {
-		String rstr = "" + getNetworkTypeStr(m_telManager.getNetworkType()) + " " + getDataStateStr(m_telManager.getDataState()) + " " + getDataActivityStr(m_telManager.getDataActivity())+ " " + m_ss;
+		GsmCellLocation gcl = ((GsmCellLocation)m_telManager.getCellLocation());
+		String rstr = "" + getNetworkTypeStr(m_telManager.getNetworkType()) + " " + getDataStateStr(m_telManager.getDataState()) + " " + getDataActivityStr(m_telManager.getDataActivity())+ " " + m_ss 
+		+ " " + gcl.getCid() + " " + gcl.getLac(); //FIXME GSM_ONLY method, get cell_id and Location_area_code
 		return rstr;
 		
 	}
