@@ -2,6 +2,8 @@
  * 
  */
 package com.Lab973.GreenSmartphone;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.io.BufferedReader;
@@ -63,7 +65,10 @@ public class PacketLogger extends MyLogger {
 			
 			OutputStream outs = process.getOutputStream();
 			DataOutputStream output = new DataOutputStream(outs);
-			output.writeBytes("/data/tcpdump -s 0 -w /sdcard/packet.pcap\n");
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
+			Date curDate = new Date(System.currentTimeMillis());
+			String curDateStr = formatter.format(curDate);
+			output.writeBytes("/data/tcpdump -s 0 -w /sdcard/"+ curDateStr +"packet.pcap\n");
 			output.flush();
 			
 			while(stopFlag){
