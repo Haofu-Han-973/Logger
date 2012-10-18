@@ -41,7 +41,7 @@ public abstract class MyLogger extends Thread {
 			this.stopFlag = true;
 		    BufferedWriter out = new BufferedWriter(new FileWriter(this.logFileName));
 		    SimpleDateFormat bartDateFormat =  
-			new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");  
+			new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss.SSS");  
 		    int count = 0;
 			while(stopFlag){
 				try {

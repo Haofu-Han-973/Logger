@@ -56,7 +56,7 @@ public class CPULogger extends MyLogger{
 			this.stopFlag = true;
 		    BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/sdcard/cpu.txt",false)));
 		    SimpleDateFormat bartDateFormat =  
-		    		  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");  
+		    		  new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss.SSS");  
 			while(stopFlag){
 				long timeInMillis = System.currentTimeMillis();
 				Calendar cal = Calendar.getInstance();

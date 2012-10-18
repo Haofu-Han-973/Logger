@@ -1,8 +1,17 @@
 package com.Lab973.GreenSmartphone;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import android.app.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -17,6 +26,7 @@ public class MobleEventCollectorActivity extends Activity {
     /** Called when the activity is first created. */
 	Button buttonstart=null;
 	Button buttonstop=null;
+	Button buttonstamp = null;
 	SeekBar intervalbar=null;
 	CheckBox cbscreen=null;
 	CheckBox cbcpu=null;
@@ -26,6 +36,7 @@ public class MobleEventCollectorActivity extends Activity {
 	CheckBox cbwifi=null;
 	CheckBox cbbluetooth=null;
 	CheckBox cbgps=null;
+	CheckBox cbsensor=null;
 	boolean screenchecked=false;
 	boolean cpuchecked=false;
 	boolean memorychecked=false;
@@ -34,8 +45,10 @@ public class MobleEventCollectorActivity extends Activity {
 	boolean wifichecked=false;
 	boolean bluetoothchecked=false;
 	boolean gpschecked=false;
+	boolean sensorchecked = false;
 	int interval=1;
-
+	PrintWriter time_stamp_file = null;
+	SimpleDateFormat bartDateFormat = null;
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -47,8 +60,11 @@ public class MobleEventCollectorActivity extends Activity {
         buttonstop=(Button)findViewById(R.id.buttonstop);
         buttonstart.setOnClickListener(new oclstart());
         buttonstop.setOnClickListener(new oclstop());
+        buttonstamp = (Button)findViewById(R.id.button_stamp);
+        buttonstamp.setOnClickListener(new oclstamp());
         
         cbscreen=(CheckBox)findViewById(R.id.checkBoxScreenLight);
+        cbsensor = (CheckBox)findViewById(R.id.checkBoxSensor);
         cbcpu=(CheckBox)findViewById(R.id.checkBoxCpu);
         cbmemory=(CheckBox)findViewById(R.id.checkBoxMemory);
         cbpacket=(CheckBox)findViewById(R.id.checkBoxPacket);
@@ -61,12 +77,37 @@ public class MobleEventCollectorActivity extends Activity {
         cbmemory.setOnCheckedChangeListener(new memoryoccl());
         cbpacket.setOnCheckedChangeListener(new packetoccl());
         cbthreeG.setOnCheckedChangeListener(new threeGoccl());
+        cbsensor.setOnCheckedChangeListener(new sensoroccl());
         cbwifi.setOnCheckedChangeListener(new wifioccl());
         cbbluetooth.setOnCheckedChangeListener(new bluetoothoccl());
         cbgps.setOnCheckedChangeListener(new gpsoccl());
         intervalbar = (SeekBar)findViewById(R.id.seekBarScreenLight);
         intervalbar.setOnSeekBarChangeListener(new osb());
         intervalbar.getProgress();
+    }
+    @Override
+    public void onStop()
+    {
+    	
+    	if(time_stamp_file != null)
+		{
+			time_stamp_file.close();
+			time_stamp_file = null;
+		}
+    	super.onStop();
+    }
+    @Override
+    public void onResume()
+    {
+    	super.onResume();
+    	if(time_stamp_file == null)
+		{
+			try {
+				time_stamp_file = new PrintWriter(new BufferedWriter(new FileWriter("/sdcard/timestamp.txt",true)));
+			} catch (IOException e) {
+				Log.e("AndroidLogger", "onResume Failed" + e.toString());
+			}
+		}
     }
     public void setequal(boolean isChecked,boolean value)
     {
@@ -90,11 +131,36 @@ public class MobleEventCollectorActivity extends Activity {
 			intent.putExtra("Bluetooth", bluetoothchecked);
 			intent.putExtra("GPS", gpschecked);
 			intent.putExtra("Interval", interval);
-			
+			intent.putExtra("Sensor", sensorchecked);
 			startService(intent);
 			
 			buttonstart.setEnabled(false);
 			buttonstop.setEnabled(true);
+		}    	
+    }
+    class oclstamp implements OnClickListener
+    {
+		@Override
+		public void onClick(View v) {
+			try {
+				if(time_stamp_file == null)
+				{
+					time_stamp_file = new PrintWriter(new BufferedWriter(new FileWriter("/sdcard/timestamp.txt",true)));
+				}
+				if(bartDateFormat == null)
+				{
+					bartDateFormat =  new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss.SSS");
+				}
+				long timeInMillis = System.currentTimeMillis();
+				Calendar cal = Calendar.getInstance();
+				cal.setTimeInMillis(timeInMillis);
+				Date date = cal.getTime();
+				time_stamp_file.println(bartDateFormat.format(date));
+				time_stamp_file.flush();
+			} catch (IOException e) {
+				Log.e("AndroidLogger", "time stamp create failed " + e.toString());
+			}
+			
 		}    	
     }
     class oclstop implements OnClickListener
@@ -172,6 +238,15 @@ public class MobleEventCollectorActivity extends Activity {
 				boolean isChecked) {
 			if(isChecked)threeGchecked=true;
 			else threeGchecked=false;		
+		}   	
+    }
+    class sensoroccl implements OnCheckedChangeListener
+    {
+    	@Override
+		public void onCheckedChanged(CompoundButton buttonView,
+				boolean isChecked) {
+			if(isChecked)sensorchecked=true;
+			else sensorchecked=false;		
 		}   	
     }
     class wifioccl implements OnCheckedChangeListener
