@@ -42,7 +42,7 @@ public class ThreeGLogger extends MyLogger {
 	private class MyPhoneStateListener extends PhoneStateListener{
 
 		@Override
-	    public void onSignalStrengthsChanged(SignalStrength signalStrength){
+		public void onSignalStrengthsChanged(SignalStrength signalStrength){
 			super.onSignalStrengthsChanged(signalStrength);
 			m_ss = signalStrength.getGsmSignalStrength();
 		}

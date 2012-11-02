@@ -27,6 +27,7 @@ public class LogService extends Service {
 	boolean bluetoothchecked=false;
 	boolean gpschecked=false;
 	boolean sensorchecked=false;
+	boolean touchchecked=false;
 	CPULogger cl;
 	ScreenLogger sl;
 	MemoLogger m1;
@@ -36,8 +37,10 @@ public class LogService extends Service {
 	BluetoothLogger bl;
 	GPSLogger gl;
 	AccLogger sensorlogger;
+	TouchLogger touchlogger;
 	PowerManager.WakeLock wlock;
 	NotificationManager mNM;
+	
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -74,7 +77,8 @@ public class LogService extends Service {
 			m1.stopLog();
 		if (packetchecked)
 			pl.stopLog();
-
+		if (touchchecked)
+			touchlogger.stopLog();
 		if (threeGchecked)
 			tl.stopLog();
 		if (wifichecked)
@@ -92,72 +96,78 @@ public class LogService extends Service {
 
 	@Override
 	public void onStart(Intent intent, int startId) {
-
-		interval = intent.getIntExtra("Interval", 1000);
-		cpuchecked = intent.getBooleanExtra("Cpu", false);
-		screenchecked = intent.getBooleanExtra("Screen", false);
-		memorychecked = intent.getBooleanExtra("Memory", false);
-		packetchecked = intent.getBooleanExtra("Packet", false);
-		sensorchecked = intent.getBooleanExtra("Sensor", false);
-		threeGchecked = intent.getBooleanExtra("ThreeG", false);
-		wifichecked = intent.getBooleanExtra("Wifi", false);
-		bluetoothchecked = intent.getBooleanExtra("Bluetooth", false);
-		gpschecked = intent.getBooleanExtra("GPS", false);
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
-		Date curDate = new Date(System.currentTimeMillis());
-		String curDateStr = formatter.format(curDate);
-		if(cpuchecked)
-		{
-			cl = new CPULogger("/sdcard/cpu"+curDateStr+".txt", interval);	
-
-			cl.start();
+		if(intent != null){
+			interval = intent.getIntExtra("Interval", 1000);
+			cpuchecked = intent.getBooleanExtra("Cpu", false);
+			screenchecked = intent.getBooleanExtra("Screen", false);
+			memorychecked = intent.getBooleanExtra("Memory", false);
+			packetchecked = intent.getBooleanExtra("Packet", false);
+			sensorchecked = intent.getBooleanExtra("Sensor", false);
+			threeGchecked = intent.getBooleanExtra("ThreeG", false);
+			wifichecked = intent.getBooleanExtra("Wifi", false);
+			touchchecked = intent.getBooleanExtra("Touch", false);
+			bluetoothchecked = intent.getBooleanExtra("Bluetooth", false);
+			gpschecked = intent.getBooleanExtra("GPS", false);
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
+			Date curDate = new Date(System.currentTimeMillis());
+			String curDateStr = formatter.format(curDate);
+			if(cpuchecked)
+			{
+				cl = new CPULogger("/sdcard/cpu"+curDateStr+".txt", interval);	
+	
+				cl.start();
+			}
+			if(screenchecked)
+			{
+	
+				sl = new ScreenLogger("/sdcard/screen"+curDateStr+".txt", interval, getApplicationContext());	
+	
+				sl.start();
+			}
+			if(memorychecked)
+			{
+	
+				m1 = new MemoLogger("/sdcard/memory"+curDateStr+".txt", interval, this);
+	
+				m1.start();
+			}
+			if(packetchecked)
+			{
+	
+				pl = new PacketLogger("/sdcard/packet"+curDateStr+".txt", interval);
+				pl.start();
+			}
+			if(threeGchecked)
+			{
+				tl = new ThreeGLogger("/sdcard/threeG"+curDateStr+".txt", interval, this);
+				tl.start();
+			}
+			if(wifichecked)
+			{
+				wl = new WifiLogger("/sdcard/wifi"+curDateStr+".txt", interval, this);
+				wl.start();
+			}
+			if(bluetoothchecked)
+			{
+				bl = new BluetoothLogger("/sdcard/bluetooth"+curDateStr+".txt", interval);
+				bl.start();
+			}
+			if(gpschecked)
+			{
+				gl = new GPSLogger("/sdcard/gps"+curDateStr+".txt", interval, this);
+				gl.start();
+			}
+			if(sensorchecked)
+			{
+				sensorlogger = new AccLogger("/sdcard/sensor/"+curDateStr+".txt", interval, (SensorManager)this.getSystemService(SENSOR_SERVICE));
+				sensorlogger.start();
+			}
+			if(touchchecked)
+			{
+				touchlogger = new TouchLogger("/sdcard/TouchEvent/"+curDateStr+".txt", interval);
+				touchlogger.start();
+			}
 		}
-		if(screenchecked)
-		{
-
-			sl = new ScreenLogger("/sdcard/screen"+curDateStr+".txt", interval, getApplicationContext());	
-
-			sl.start();
-		}
-		if(memorychecked)
-		{
-
-			m1 = new MemoLogger("/sdcard/memory"+curDateStr+".txt", interval, this);
-
-			m1.start();
-		}
-		if(packetchecked)
-		{
-
-			pl = new PacketLogger("/sdcard/packet"+curDateStr+".txt", interval);
-			pl.start();
-		}
-		if(threeGchecked)
-		{
-			tl = new ThreeGLogger("/sdcard/threeG"+curDateStr+".txt", interval, this);
-			tl.start();
-		}
-		if(wifichecked)
-		{
-			wl = new WifiLogger("/sdcard/wifi"+curDateStr+".txt", interval, this);
-			wl.start();
-		}
-		if(bluetoothchecked)
-		{
-			bl = new BluetoothLogger("/sdcard/bluetooth"+curDateStr+".txt", interval);
-			bl.start();
-		}
-		if(gpschecked)
-		{
-			gl = new GPSLogger("/sdcard/gps"+curDateStr+".txt", interval, this);
-			gl.start();
-		}
-		if(sensorchecked)
-		{
-			sensorlogger = new AccLogger("/sdcard/sensor/"+curDateStr+".txt", interval, (SensorManager)this.getSystemService(SENSOR_SERVICE));
-			sensorlogger.start();
-		}
-
 		super.onStart(intent, startId);
 	}
 	private void showNotification() {

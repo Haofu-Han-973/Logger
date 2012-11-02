@@ -37,6 +37,7 @@ public class MobleEventCollectorActivity extends Activity {
 	CheckBox cbbluetooth=null;
 	CheckBox cbgps=null;
 	CheckBox cbsensor=null;
+	CheckBox cbtouch=null;
 	boolean screenchecked=false;
 	boolean cpuchecked=false;
 	boolean memorychecked=false;
@@ -46,6 +47,7 @@ public class MobleEventCollectorActivity extends Activity {
 	boolean bluetoothchecked=false;
 	boolean gpschecked=false;
 	boolean sensorchecked = false;
+	boolean touchchecked=false;
 	int interval=1;
 	PrintWriter time_stamp_file = null;
 	SimpleDateFormat bartDateFormat = null;
@@ -63,6 +65,7 @@ public class MobleEventCollectorActivity extends Activity {
         buttonstamp = (Button)findViewById(R.id.button_stamp);
         buttonstamp.setOnClickListener(new oclstamp());
         
+        cbtouch=(CheckBox)findViewById(R.id.checkBoxTouch);
         cbscreen=(CheckBox)findViewById(R.id.checkBoxScreenLight);
         cbsensor = (CheckBox)findViewById(R.id.checkBoxSensor);
         cbcpu=(CheckBox)findViewById(R.id.checkBoxCpu);
@@ -72,6 +75,7 @@ public class MobleEventCollectorActivity extends Activity {
         cbwifi=(CheckBox)findViewById(R.id.checkBoxWifi);
         cbbluetooth=(CheckBox)findViewById(R.id.checkBoxBluetooth);
         cbgps=(CheckBox)findViewById(R.id.checkBoxGPS);
+        cbtouch.setOnCheckedChangeListener(new touchoccl());
         cbscreen.setOnCheckedChangeListener(new screenoccl());
         cbcpu.setOnCheckedChangeListener(new cpuoccl());
         cbmemory.setOnCheckedChangeListener(new memoryoccl());
@@ -132,6 +136,7 @@ public class MobleEventCollectorActivity extends Activity {
 			intent.putExtra("GPS", gpschecked);
 			intent.putExtra("Interval", interval);
 			intent.putExtra("Sensor", sensorchecked);
+			intent.putExtra("Touch", touchchecked);
 			startService(intent);
 			
 			buttonstart.setEnabled(false);
@@ -202,6 +207,15 @@ public class MobleEventCollectorActivity extends Activity {
 				boolean isChecked) {
 			if(isChecked)screenchecked=true;
 			else screenchecked=false;	
+		}   	
+    }
+    class touchoccl implements OnCheckedChangeListener
+    {
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView,
+				boolean isChecked) {
+			if(isChecked)touchchecked=true;
+			else touchchecked=false;	
 		}   	
     }
     class cpuoccl implements OnCheckedChangeListener

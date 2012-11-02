@@ -19,5 +19,6 @@
     <string name="checkButtonWifi">Wifi</string>
     <string name="checkButtonGPS">GPS</string>
     <string name="checkBoxSensor">Acc Sensor</string>
+    <string name="checkBoxTouch">Touch Event</string>
 
 </resources>

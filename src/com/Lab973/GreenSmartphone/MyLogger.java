@@ -18,7 +18,7 @@ public abstract class MyLogger extends Thread {
 	public boolean stopFlag;
 	public String log="";
 	public static final String TAG="MyLogger";
-	public static final int FLUSH_COUNT = 100;
+	public static final int FLUSH_COUNT = 1000;
 	public MyLogger(String logFileName, int interval){
 		super();
 		this.logFileName = logFileName;

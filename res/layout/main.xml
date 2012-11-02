@@ -74,6 +74,11 @@
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/checkBoxTouch" android:id="@+id/checkBoxTouch"/>
+    
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/checkBoxSensor" android:id="@+id/checkBoxSensor"/>
 
     <CheckBox
