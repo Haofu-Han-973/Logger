@@ -27,6 +27,7 @@ public class MobleEventCollectorActivity extends Activity {
 	Button buttonstart=null;
 	Button buttonstop=null;
 	Button buttonstamp = null;
+	Button bLeft,bRight,bPool;
 	SeekBar intervalbar=null;
 	CheckBox cbscreen=null;
 	CheckBox cbcpu=null;
@@ -64,6 +65,12 @@ public class MobleEventCollectorActivity extends Activity {
         buttonstop.setOnClickListener(new oclstop());
         buttonstamp = (Button)findViewById(R.id.button_stamp);
         buttonstamp.setOnClickListener(new oclstamp());
+        bLeft = (Button)findViewById(R.id.buttonleft);
+        bRight = (Button)findViewById(R.id.buttonright);
+        bPool = (Button)findViewById(R.id.buttonpool);
+        bLeft.setOnClickListener(new oclstamp());
+        bRight.setOnClickListener(new oclstamp());
+        bPool.setOnClickListener(new oclstamp());
         
         cbtouch=(CheckBox)findViewById(R.id.checkBoxTouch);
         cbscreen=(CheckBox)findViewById(R.id.checkBoxScreenLight);
@@ -149,7 +156,7 @@ public class MobleEventCollectorActivity extends Activity {
     class oclstamp implements OnClickListener
     {
 		@Override
-		public void onClick(View v) {
+		public synchronized void onClick(View v) {
 			try {
 				if(time_stamp_file == null)
 				{
@@ -163,13 +170,13 @@ public class MobleEventCollectorActivity extends Activity {
 				Calendar cal = Calendar.getInstance();
 				cal.setTimeInMillis(timeInMillis);
 				Date date = cal.getTime();
-				time_stamp_file.println(bartDateFormat.format(date));
+				time_stamp_file.println(bartDateFormat.format(date) + "\t" + ((Button)v).getText());
 				time_stamp_file.flush();
 			} catch (IOException e) {
 				Log.e("AndroidLogger", "time stamp create failed " + e.toString());
 			}
 			
-		}    	
+		}
     }
     class oclstop implements OnClickListener
     {

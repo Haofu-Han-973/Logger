@@ -46,7 +46,37 @@
             android:text="@string/stopButton" >
         </Button>
     </LinearLayout>
-    
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill"
+        android:orientation="horizontal"
+        android:weightSum="1" >
+
+        <Button
+            android:id="@+id/buttonleft"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.33"
+            android:text="LEFT" >
+        </Button>
+
+        <Button
+            android:id="@+id/buttonpool"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.33"
+            android:text="POOL" />
+
+        <Button
+            android:id="@+id/buttonright"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.33"
+            android:text="RIGHT" >
+        </Button>
+    </LinearLayout>
 
     <SeekBar android:layout_weight="1" android:id="@+id/seekBarScreenLight" android:layout_gravity="center" android:layout_marginRight="20dp" android:layout_width="fill_parent" android:max="999" android:layout_marginLeft="20dp" android:layout_height="wrap_content" android:progress="500"></SeekBar>
     
