@@ -108,6 +108,7 @@ public class LogService extends Service {
 			touchchecked = intent.getBooleanExtra("Touch", false);
 			bluetoothchecked = intent.getBooleanExtra("Bluetooth", false);
 			gpschecked = intent.getBooleanExtra("GPS", false);
+			
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
 			Date curDate = new Date(System.currentTimeMillis());
 			String curDateStr = formatter.format(curDate);

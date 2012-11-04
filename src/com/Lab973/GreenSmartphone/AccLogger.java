@@ -24,15 +24,16 @@ public class AccLogger extends MyLogger implements SensorEventListener {
 	private Sensor mOrientation;
 	private SensorManager sensorManager;
 	private String log;
+	private StringBuilder log_perf = null;
 	private int count = 0;
 	private float orientation[] = {0,0,0};
 	public AccLogger(String logFileName, int interval, SensorManager s) {
 		super(logFileName, interval);
 		try{
 			log = "";
+			log_perf = new StringBuilder();
 			out = new BufferedWriter(new FileWriter(this.logFileName));
-		    bartDateFormat =  
-			new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss.SSS");  
+		    bartDateFormat =  new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss.SSS");  
 		    sensorManager = s;
 		    mAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		    mOrientation = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
@@ -60,7 +61,7 @@ public class AccLogger extends MyLogger implements SensorEventListener {
 			while(stopFlag){
 				try {
 				
-					Thread.sleep(this.logInterval);
+					Thread.sleep(1000);
 					
 					
 				} catch (InterruptedException e1) {
@@ -70,7 +71,7 @@ public class AccLogger extends MyLogger implements SensorEventListener {
 			if(!stopFlag)
 			{
 				sensorManager.unregisterListener(this);
-				out.write(log);
+				out.write(log_perf.toString());
 				out.flush();
 				out.close();
 				
@@ -98,21 +99,19 @@ public class AccLogger extends MyLogger implements SensorEventListener {
 			float x = e.values[SensorManager.DATA_X];
 	        float y = e.values[SensorManager.DATA_Y];
 	        float z = e.values[SensorManager.DATA_Z];
-	        
-	        log+=bartDateFormat.format(date)+"\t"+ x + " " + y + " " + z + " "
-	        	+ orientation[0] + " " + orientation[1] + " " + orientation[2] + "\r\n";
+	        log_perf.append(bartDateFormat.format(date)+"\t"+ x + " " + y + " " + z + " "
+	        	+ orientation[0] + " " + orientation[1] + " " + orientation[2] + "\r\n");
 	        if(count++ >= FLUSH_COUNT)
 	        {
 	        	count = 0;
-	        	
 	        	try {
 					out.flush();
-					out.write(log);
+					out.write(log_perf.toString());
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					Log.e("SensorLogger", e1.toString());
 				}
-	        	log = "";
+	        	log_perf = new StringBuilder();
 	        }
 	        break;
 		}

@@ -137,6 +137,7 @@ public class MobleEventCollectorActivity extends Activity {
 			intent.putExtra("Interval", interval);
 			intent.putExtra("Sensor", sensorchecked);
 			intent.putExtra("Touch", touchchecked);
+		
 			startService(intent);
 			
 			buttonstart.setEnabled(false);
