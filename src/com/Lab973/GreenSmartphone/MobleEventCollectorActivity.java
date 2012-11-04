@@ -54,7 +54,7 @@ public class MobleEventCollectorActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
+        
     	
 
         setContentView(R.layout.main);
@@ -88,7 +88,9 @@ public class MobleEventCollectorActivity extends Activity {
         intervalbar = (SeekBar)findViewById(R.id.seekBarScreenLight);
         intervalbar.setOnSeekBarChangeListener(new osb());
         intervalbar.getProgress();
+        super.onCreate(savedInstanceState);
     }
+
     @Override
     public void onStop()
     {
