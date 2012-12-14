@@ -7,50 +7,25 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-
-
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-
 import android.hardware.SensorManager;
 import android.util.Log;
 
+public class GyroLogger extends MyLogger implements SensorEventListener {
 
-public class AccLogger extends MyLogger implements SensorEventListener {
 	BufferedWriter out;
 	SimpleDateFormat bartDateFormat;
-	private Sensor mAccelerometer;
-	private Sensor mOrientation;
+	private Sensor mGyro;
 	private SensorManager sensorManager;
 	private String log;
 	private StringBuilder log_perf = null;
 	private int count = 0;
 	private float orientation[] = {0,0,0};
-	public AccLogger(String logFileName, int interval, SensorManager s) {
-		super(logFileName, interval);
-		try{
-			log = "";
-			log_perf = new StringBuilder();
-			out = new BufferedWriter(new FileWriter(this.logFileName));
-		    bartDateFormat =  new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss.SSS");  
-		    sensorManager = s;
-		    mAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-		    mOrientation = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-		    sensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
-		    sensorManager.registerListener(this, mOrientation, SensorManager.SENSOR_DELAY_FASTEST);
-		    
-		}catch(IOException e)
-		{
-			Log.e("SensorLogger",e.toString());
-			
-		}
-	}
-	@Override
-	public String getLogValue() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	private Sensor mOrientation;
+
+
 	@Override
 	public void run() {
 		
@@ -90,7 +65,7 @@ public class AccLogger extends MyLogger implements SensorEventListener {
 	public void onSensorChanged(SensorEvent e) {
 		// TODO Auto-generated method stub
 		switch(e.sensor.getType()){
-		case Sensor.TYPE_ACCELEROMETER:{
+		case Sensor.TYPE_GYROSCOPE:{
 			//long timeInMillis = (long) (e.timestamp * 1.0f / 1000000.0f);
 			Calendar cal = Calendar.getInstance();
 			cal.setTimeInMillis(System.currentTimeMillis());
@@ -99,22 +74,24 @@ public class AccLogger extends MyLogger implements SensorEventListener {
 			float x = e.values[SensorManager.DATA_X];
 	        float y = e.values[SensorManager.DATA_Y];
 	        float z = e.values[SensorManager.DATA_Z];
+//	        log_perf.append(bartDateFormat.format(date)+"\t"+ x + " " + y + " " + z + " "
+//	        	+ orientation[0] + " " + orientation[1] + " " + orientation[2] + "\r\n");
+//	        log_perf.append(bartDateFormat.format(date)).append("\t").append(x).append(" ").append(y).append(" ").append(z).append(" ")
+//	        .append(orientation[0]).append(" ").append(orientation[1]).append(" ").append(orientation[2]).append("\r\n");
 	        log_perf.append(bartDateFormat.format(date)).append("\t"+ x + " " + y + " " + z + " ")
 	        .append(orientation[0] + " " + orientation[1] + " " + orientation[2] + "\r\n");
-//	        log_perf.append(bartDateFormat.format(date)+"\t"+ x + " " + y + " " + z + " "
-//		        	+ orientation[0] + " " + orientation[1] + " " + orientation[2] + "\r\n");
-//	        log_perf.append(bartDateFormat.format(date)).append("\t").append(x).append(" ").append(y).append(" ").append(z).append(" ")
-//		        .append(orientation[0]).append(" ").append(orientation[1]).append(" ").append(orientation[2]).append("\r\n");
 	        if(count++ >= FLUSH_COUNT)
 	        {
 	        	count = 0;
 	        	try {
-	        		out.write(log_perf.toString());
+					
+					out.write(log_perf.toString());
 					out.flush();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					Log.e("SensorLogger", e1.toString());
 				}
+	        	//log_perf = new StringBuilder();
 	        	log_perf.delete(0, log_perf.length());
 	        }
 	        break;
@@ -127,6 +104,29 @@ public class AccLogger extends MyLogger implements SensorEventListener {
 		}
 		}
 	}
+	public GyroLogger(String logFileName, int interval, SensorManager s) {
+		super(logFileName, interval);
+		try{
+			log = "";
+			log_perf = new StringBuilder();
+			out = new BufferedWriter(new FileWriter(this.logFileName));
+		    bartDateFormat =  new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss.SSS");  
+		    sensorManager = s;
+		    mGyro = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+		    sensorManager.registerListener(this, mGyro, SensorManager.SENSOR_DELAY_FASTEST);
+		    mOrientation = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+		    sensorManager.registerListener(this, mOrientation, SensorManager.SENSOR_DELAY_FASTEST);
+		}catch(IOException e)
+		{
+			Log.e("SensorLogger",e.toString());
+			
+		}
+	}
 
+	@Override
+	public String getLogValue() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
