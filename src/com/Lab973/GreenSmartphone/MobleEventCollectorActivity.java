@@ -39,6 +39,8 @@ public class MobleEventCollectorActivity extends Activity {
 	CheckBox cbgps=null;
 	CheckBox cbsensor=null;
 	CheckBox cbtouch=null;
+	CheckBox cbgyro=null;
+	
 	boolean screenchecked=false;
 	boolean cpuchecked=false;
 	boolean memorychecked=false;
@@ -49,6 +51,8 @@ public class MobleEventCollectorActivity extends Activity {
 	boolean gpschecked=false;
 	boolean sensorchecked = false;
 	boolean touchchecked=false;
+	boolean gyrochecked=false;
+	
 	int interval=1;
 	PrintWriter time_stamp_file = null;
 	SimpleDateFormat bartDateFormat = null;
@@ -72,6 +76,8 @@ public class MobleEventCollectorActivity extends Activity {
         bRight.setOnClickListener(new oclstamp());
         bPool.setOnClickListener(new oclstamp());
         
+        cbgyro=(CheckBox)findViewById(R.id.checkGyro);
+        cbgyro.setOnCheckedChangeListener(new gyrooccl());
         cbtouch=(CheckBox)findViewById(R.id.checkBoxTouch);
         cbscreen=(CheckBox)findViewById(R.id.checkBoxScreenLight);
         cbsensor = (CheckBox)findViewById(R.id.checkBoxSensor);
@@ -116,7 +122,7 @@ public class MobleEventCollectorActivity extends Activity {
     	if(time_stamp_file == null)
 		{
 			try {
-				time_stamp_file = new PrintWriter(new BufferedWriter(new FileWriter("/sdcard/timestamp.txt",true)));
+				time_stamp_file = new PrintWriter(new BufferedWriter(new FileWriter("/sdcard/Log/timestamp.txt",true)));
 			} catch (IOException e) {
 				Log.e("AndroidLogger", "onResume Failed" + e.toString());
 			}
@@ -146,6 +152,7 @@ public class MobleEventCollectorActivity extends Activity {
 			intent.putExtra("Interval", interval);
 			intent.putExtra("Sensor", sensorchecked);
 			intent.putExtra("Touch", touchchecked);
+			intent.putExtra("Gyro", gyrochecked);
 		
 			startService(intent);
 			
@@ -160,7 +167,7 @@ public class MobleEventCollectorActivity extends Activity {
 			try {
 				if(time_stamp_file == null)
 				{
-					time_stamp_file = new PrintWriter(new BufferedWriter(new FileWriter("/sdcard/timestamp.txt",true)));
+					time_stamp_file = new PrintWriter(new BufferedWriter(new FileWriter("/sdcard/Log/timestamp.txt",true)));
 				}
 				if(bartDateFormat == null)
 				{
@@ -217,6 +224,15 @@ public class MobleEventCollectorActivity extends Activity {
 				boolean isChecked) {
 			if(isChecked)screenchecked=true;
 			else screenchecked=false;	
+		}   	
+    }
+    class gyrooccl implements OnCheckedChangeListener
+    {
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView,
+				boolean isChecked) {
+			if(isChecked)gyrochecked=true;
+			else gyrochecked=false;	
 		}   	
     }
     class touchoccl implements OnCheckedChangeListener

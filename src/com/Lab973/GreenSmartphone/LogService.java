@@ -18,6 +18,7 @@ import com.Lab973.GreenSmartphone.IRemoteService.Stub;
 
 public class LogService extends Service {
 	int interval=1;
+	boolean started = false;
 	boolean screenchecked=false;
 	boolean cpuchecked=false;
 	boolean memorychecked=false;
@@ -28,6 +29,8 @@ public class LogService extends Service {
 	boolean gpschecked=false;
 	boolean sensorchecked=false;
 	boolean touchchecked=false;
+	boolean gyrochecked=false;
+	GyroLogger gyrol;
 	CPULogger cl;
 	ScreenLogger sl;
 	MemoLogger m1;
@@ -89,6 +92,8 @@ public class LogService extends Service {
 			gl.stopLog();
 		if (sensorchecked)
 			sensorlogger.stopLog();
+		if (gyrochecked)
+			gyrol.stopLog();
 		wlock.release();
 		destroyNotification();
 		super.onDestroy();
@@ -96,7 +101,7 @@ public class LogService extends Service {
 
 	@Override
 	public void onStart(Intent intent, int startId) {
-		if(intent != null){
+		if(intent != null && !this.started){
 			interval = intent.getIntExtra("Interval", 1000);
 			cpuchecked = intent.getBooleanExtra("Cpu", false);
 			screenchecked = intent.getBooleanExtra("Screen", false);
@@ -108,65 +113,71 @@ public class LogService extends Service {
 			touchchecked = intent.getBooleanExtra("Touch", false);
 			bluetoothchecked = intent.getBooleanExtra("Bluetooth", false);
 			gpschecked = intent.getBooleanExtra("GPS", false);
+			gyrochecked = intent.getBooleanExtra("Gyro", false);
 			
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
 			Date curDate = new Date(System.currentTimeMillis());
 			String curDateStr = formatter.format(curDate);
 			if(cpuchecked)
 			{
-				cl = new CPULogger("/sdcard/cpu"+curDateStr+".txt", interval);	
+				cl = new CPULogger("/sdcard/Log/cpu/"+curDateStr+".txt", interval);	
 	
 				cl.start();
 			}
 			if(screenchecked)
 			{
 	
-				sl = new ScreenLogger("/sdcard/screen"+curDateStr+".txt", interval, getApplicationContext());	
+				sl = new ScreenLogger("/sdcard/Log/screen/"+curDateStr+".txt", interval, getApplicationContext());	
 	
 				sl.start();
 			}
 			if(memorychecked)
 			{
 	
-				m1 = new MemoLogger("/sdcard/memory"+curDateStr+".txt", interval, this);
+				m1 = new MemoLogger("/sdcard/Log/memory/"+curDateStr+".txt", interval, this);
 	
 				m1.start();
 			}
 			if(packetchecked)
 			{
 	
-				pl = new PacketLogger("/sdcard/packet"+curDateStr+".txt", interval);
+				pl = new PacketLogger("/sdcard/Log/packet/"+curDateStr+".txt", interval);
 				pl.start();
 			}
 			if(threeGchecked)
 			{
-				tl = new ThreeGLogger("/sdcard/threeG"+curDateStr+".txt", interval, this);
+				tl = new ThreeGLogger("/sdcard/Log/threeG/"+curDateStr+".txt", interval, this);
 				tl.start();
 			}
 			if(wifichecked)
 			{
-				wl = new WifiLogger("/sdcard/wifi"+curDateStr+".txt", interval, this);
+				wl = new WifiLogger("/sdcard/Log/wifi/"+curDateStr+".txt", interval, this);
 				wl.start();
 			}
 			if(bluetoothchecked)
 			{
-				bl = new BluetoothLogger("/sdcard/bluetooth"+curDateStr+".txt", interval);
+				bl = new BluetoothLogger("/sdcard/Log/bluetooth/"+curDateStr+".txt", interval);
 				bl.start();
 			}
 			if(gpschecked)
 			{
-				gl = new GPSLogger("/sdcard/gps"+curDateStr+".txt", interval, this);
+				gl = new GPSLogger("/sdcard/Log/gps/"+curDateStr+".txt", interval, this);
 				gl.start();
 			}
 			if(sensorchecked)
 			{
-				sensorlogger = new AccLogger("/sdcard/sensor/"+curDateStr+".txt", interval, (SensorManager)this.getSystemService(SENSOR_SERVICE));
+				sensorlogger = new AccLogger("/sdcard/Log/acc/"+curDateStr+".txt", interval, (SensorManager)this.getSystemService(SENSOR_SERVICE));
 				sensorlogger.start();
 			}
 			if(touchchecked)
 			{
-				touchlogger = new TouchLogger("/sdcard/TouchEvent/"+curDateStr+".txt", interval);
+				touchlogger = new TouchLogger("/sdcard/Log/touch/"+curDateStr+".txt", interval);
 				touchlogger.start();
+			}
+			if(gyrochecked)
+			{
+				gyrol = new GyroLogger("/sdcard/Log/gyro/"+curDateStr+".txt", interval, (SensorManager)this.getSystemService(SENSOR_SERVICE));
+				gyrol.start();
 			}
 		}
 		super.onStart(intent, startId);

@@ -58,9 +58,13 @@ public class GPSLogger extends MyLogger{
 					Bundle extras) {
 			}
 		};
-		
+		try{
 		m_locManager.requestLocationUpdates(m_locManager.GPS_PROVIDER, 1000, 5, gps_listener);
 		m_locManager.requestLocationUpdates(m_locManager.NETWORK_PROVIDER, 1000, 10, network_listener);
+		}catch(Exception e)
+		{
+			Log.e("GPSLogger", e.toString());
+		}
 	}
 	@Override
 	public void stopLog()

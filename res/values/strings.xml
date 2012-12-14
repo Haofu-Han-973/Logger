@@ -20,5 +20,6 @@
     <string name="checkButtonGPS">GPS</string>
     <string name="checkBoxSensor">Acc Sensor</string>
     <string name="checkBoxTouch">Touch Event</string>
+    <string name="checkGyro">Gyroscope</string>
 
 </resources>
