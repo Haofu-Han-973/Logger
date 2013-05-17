@@ -74,7 +74,6 @@ public class AccLogger extends MyLogger implements SensorEventListener {
 				out.write(log_perf.toString());
 				out.flush();
 				out.close();
-				
 			}
 		} catch (IOException e) {//open file failed!
 			e.printStackTrace();
